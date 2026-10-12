@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
-    <PackageReference Include="Newtonsoft.Json" Version="14.0.1-beta2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="VRChat.OSCQuery" Version="0.0.7" />
     <ProjectReference Include="external\photino.NET\Photino.NET\Photino.NET.csproj" />
     <PackageReference Include="NativeFileDialogSharp" Version="0.6.0-alpha" />
