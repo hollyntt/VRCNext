@@ -1230,7 +1230,8 @@ public partial class AppShell
         catch { rel = "index.html"; }
         if (rel.StartsWith("..") || Path.IsPathRooted(rel)) rel = "index.html";
         rel = rel.Replace(Path.DirectorySeparatorChar, '/');
-        return $"http://localhost:{_httpPort}/app/{rel}";
+        var url = $"http://localhost:{_httpPort}/app/{rel}";
+        return OperatingSystem.IsLinux() ? url + "?vrcnPlatform=linux" : url;
     }
 #endif
 
