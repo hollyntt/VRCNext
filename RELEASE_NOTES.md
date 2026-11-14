@@ -1,4 +1,4 @@
-﻿# **2027.1.0**
+﻿# **2027.2.0**
 
 ## New
 * Added **Space Walk** to tilt and turn your playspace in every direction, like floating in space.
