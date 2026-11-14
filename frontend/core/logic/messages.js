@@ -1,6 +1,13 @@
 ﻿/* === Photino message handler === */
 window.external.receiveMessage(rawMsg => {
-    const { type, payload } = JSON.parse(rawMsg);
+    const msg = JSON.parse(rawMsg);
+    if (msg.type !== '__batch') { _handleBackendMessage(msg.type, msg.payload); return; }
+    for (const m of msg.payload) {
+        try { _handleBackendMessage(m.type, m.payload); } catch (e) { console.error('[messages] ' + m.type, e); }
+    }
+});
+
+function _handleBackendMessage(type, payload) {
     // Forward every incoming event to Action Flow's websocket-trigger router.
     // Fire-and-forget; any errors must not break the main handler.
     if (typeof window.__afOnWebsocketEvent === 'function') {
@@ -1508,7 +1515,7 @@ case 'vrcNews':
     }
     if (typeof navUpdateBadges === 'function') navUpdateBadges();
     if (typeof navUpdatePlaySubtitle === 'function') navUpdatePlaySubtitle();
-});
+}
 // 'ready' and 'kxdGetDevices' are sent by the fragment loader at the end of
 // index.html, AFTER all scripts have loaded. Sending them here would cause the
 // backend's loadSettings response to arrive before init.js runs, and init.js's

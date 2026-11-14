@@ -7,11 +7,13 @@ namespace VRCNext.Services;
 
 public class AuthAPI(VRChatApiService ctx)
 {
-    public async Task<VRChatApiService.LoginResult> TryResumeSessionAsync()
+    public Task<HttpResponseMessage> PrefetchAuthUserAsync() => ctx._http.GetAsync($"{VRChatApiService.BASE}/auth/user");
+
+    public async Task<VRChatApiService.LoginResult> TryResumeSessionAsync(Task<HttpResponseMessage>? prefetched = null)
     {
         try
         {
-            var resp = await ctx._http.GetAsync($"{VRChatApiService.BASE}/auth/user");
+            var resp = await (prefetched ?? ctx._http.GetAsync($"{VRChatApiService.BASE}/auth/user"));
             var body = await resp.Content.ReadAsStringAsync();
             ctx.Log($"Resume session response: {(int)resp.StatusCode}");
 

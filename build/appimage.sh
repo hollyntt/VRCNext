@@ -61,6 +61,14 @@ else
         .) | (cd "$SRC" && tar -xf -)
 fi
 
+# ------------------------------------------------------- Photino.Native (fork)
+FORK_DIR="$SRC/external/photino.NET"
+FORK_SO="$FORK_DIR/Photino.Native/lib/x64/Photino.Native.so"
+echo "==> Building Photino.Native.so from the fork..."
+rm -f "$FORK_SO"
+sed -i 's/\r$//' "$FORK_DIR/build-native-linux.sh"
+bash "$FORK_DIR/build-native-linux.sh"
+
 # -------------------------------------------------------------------- publish
 echo "==> Publishing linux-x64 (self-contained)..."
 rm -rf "$STAGE"
@@ -73,6 +81,7 @@ rm -rf "$STAGE"
 [ -f "$STAGE/VRCNext" ] || { echo "[ERROR] Publish output missing VRCNext binary"; exit 1; }
 [ -d "$STAGE/frontend" ] || { echo "[ERROR] Publish output missing frontend/"; exit 1; }
 [ -f "$STAGE/Photino.Native.so" ] || { echo "[ERROR] Publish output missing Photino.Native.so"; exit 1; }
+cmp -s "$STAGE/Photino.Native.so" "$FORK_SO" || { echo "[ERROR] Publish output does not contain the fork Photino.Native.so"; exit 1; }
 [ -f "$STAGE/libnfd.so" ] || { echo "[ERROR] Publish output missing libnfd.so (file dialogs)"; exit 1; }
 [ -f "$STAGE/libe_sqlite3.so" ] || { echo "[ERROR] Publish output missing libe_sqlite3.so (SQLite)"; exit 1; }
 [ -f "$STAGE/libSkiaSharp.so" ] || { echo "[ERROR] Publish output missing libSkiaSharp.so"; exit 1; }

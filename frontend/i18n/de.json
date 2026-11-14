@@ -2573,6 +2573,8 @@
   "settings.perf.v8_heap.desc": "Erhöht das Speicherlimit der JavaScript-Engine von 64 MB auf 128 MB. Hilfreich wenn VRCNext bei großen Freundeslisten oder vielen offenen Tabs träge wird.",
   "settings.perf.render_proc.label": "2 Render-Prozesse verwenden",
   "settings.perf.render_proc.desc": "Erlaubt WebView2 bis zu 2 Renderer-Prozesse statt 1 zu nutzen. Kann die Stabilität verbessern, verbraucht aber etwas mehr Arbeitsspeicher.",
+  "settings.perf.linux_soft_render.label": "Software-Rendering erzwingen",
+  "settings.perf.linux_soft_render.desc": "Zeichnet VRCNext mit der CPU statt mit der GPU. Nur einschalten, wenn das Fenster leer bleibt oder Grafikfehler zeigt, zum Beispiel in einer virtuellen Maschine. Solange es an ist, werden keine Unschärfe-Effekte angezeigt.",
   "settings.perf.restart_hint": "Ein Neustart ist erforderlich, um die Performance-Änderungen anzuwenden.",
   "settings.perf.animations.label": "Animationen und Übergänge",
   "settings.perf.animations.desc": "Deaktiviert alle Animationen und Übergänge in VRCNext. Das kann das Öffnen von Dialogen und das Wechseln zwischen ihnen beschleunigen und die CPU-Auslastung etwas reduzieren.",

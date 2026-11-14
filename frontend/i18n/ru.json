@@ -2527,6 +2527,8 @@
   "settings.perf.v8_heap.desc": "Размер памяти V8",
   "settings.perf.render_proc.label": "Render процесс",
   "settings.perf.render_proc.desc": "Отдельный процесс рендеринга",
+  "settings.perf.linux_soft_render.label": "Принудительный программный рендеринг",
+  "settings.perf.linux_soft_render.desc": "VRCNext отрисовывается на процессоре вместо видеокарты. Включайте только если окно остаётся пустым или отображается с ошибками, например в виртуальной машине. Пока параметр включён, эффекты размытия не отображаются.",
   "settings.perf.restart_hint": "Требуется перезапуск",
   "settings.perf.animations.label": "Анимации",
   "settings.perf.animations.desc": "UI анимации",

@@ -130,13 +130,13 @@
                         </div>
                         <div data-linux-only style="display:none;">
                             <div class="sf-toggle-row">
-                                <span data-i18n="settings.perf.linux_gpu.label">Enable Hardware Acceleration</span>
+                                <span data-i18n="settings.perf.linux_soft_render.label">Force Software Rendering</span>
                                 <label class="toggle">
-                                    <input type="checkbox" id="setLinuxGpuAccel" onchange="onPerfSettingChange()">
+                                    <input type="checkbox" id="setLinuxSoftRender" onchange="onPerfSettingChange()">
                                     <div class="toggle-track"><div class="toggle-knob"></div></div>
                                 </label>
                             </div>
-                            <div class="set-desc" data-i18n="settings.perf.linux_gpu.desc">Lets WebKitGTK use the GPU for rendering. Recommended on real hardware with working graphics drivers. Keep it off in virtual machines or when the window stays blank or shows glitches; VRCNext then uses safe software rendering.</div>
+                            <div class="set-desc" data-i18n="settings.perf.linux_soft_render.desc">Draws VRCNext on the CPU instead of the GPU. Only turn this on if the window stays blank or shows glitches, for example in a virtual machine. Blur effects are not shown while it is on.</div>
                         </div>
                         <div class="sf-toggle-row" style="margin-top:14px;">
                             <span data-i18n="settings.perf.animations.label">Animations and Transitions</span>

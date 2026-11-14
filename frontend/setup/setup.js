@@ -398,7 +398,13 @@ function onBackendMessage(e) {
 })();
 
 // Init
-window.external.receiveMessage(rawMsg => { onBackendMessage({ data: JSON.parse(rawMsg) }); });
+window.external.receiveMessage(rawMsg => {
+    var msg = JSON.parse(rawMsg);
+    if (msg.type !== '__batch') { onBackendMessage({ data: msg }); return; }
+    msg.payload.forEach(function (m) {
+        try { onBackendMessage({ data: m }); } catch (e) { console.error('[setup] ' + m.type, e); }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     var bar = document.getElementById('titlebar');

@@ -2611,6 +2611,8 @@
   "settings.perf.v8_heap.desc": "JavaScript 엔진 메모리 제한을 64 MB에서 128 MB로 증가합니다. VRCN이 많은 친구 목록이나 많은 탭 때문에 느릴 때 유용합니다.",
   "settings.perf.render_proc.label": "2 렌더 프로세스 사용",
   "settings.perf.render_proc.desc": "WebView2가 1개의 렌더 프로세스 대신 최대 2개의 렌더 프로세스를 사용합니다. 안정성에 도움되지만 메모리 사용량이 약간 증가합니다.",
+  "settings.perf.linux_soft_render.label": "소프트웨어 렌더링 강제",
+  "settings.perf.linux_soft_render.desc": "GPU 대신 CPU로 VRCNext를 그립니다. 가상 머신 등에서 창이 비어 있거나 화면이 깨질 때만 켜세요. 켜져 있는 동안에는 흐림 효과가 표시되지 않습니다.",
   "settings.perf.restart_hint": "성능 설정을 적용하려면 앱을 다시 시작해야 합니다.",
   "settings.perf.animations.label": "애니메이션 및 전환",
   "settings.perf.animations.desc": "VRCNext에서 모든 애니메이션 및 전환을 비활성화합니다. 다이얼로그를 열거나 전환할 때 속도가 증가하며, CPU 사용량을 약간 줄일 수 있습니다.",

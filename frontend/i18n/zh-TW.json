@@ -2596,6 +2596,8 @@
   "settings.perf.v8_heap.desc": "將 JavaScript 引擎的記憶體上限從 64 MB 提升至 128 MB。當好友列表較大或開啟多個標籤頁時執行緩慢，可嘗試開啟。",
   "settings.perf.render_proc.label": "使用 2 個渲染程式",
   "settings.perf.render_proc.desc": "允許 WebView2 使用最多 2 個渲染程式（預設為 1 個）。可能提升穩定性，但會略微增加記憶體佔用。",
+  "settings.perf.linux_soft_render.label": "強制軟體渲染",
+  "settings.perf.linux_soft_render.desc": "使用 CPU 而不是 GPU 繪製 VRCNext。僅在視窗一直空白或顯示異常時開啟，例如在虛擬機器中。開啟後不會顯示模糊效果。",
   "settings.perf.restart_hint": "需要重啟才能應用效能更改。",
   "settings.perf.animations.label": "動畫與過渡效果",
   "settings.perf.animations.desc": "停用 VRCNext 中的所有動畫和過渡效果。這可以加速對話方塊的開啟和切換，並可能略微降低 CPU 使用率。",

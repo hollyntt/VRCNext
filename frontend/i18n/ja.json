@@ -2544,6 +2544,8 @@
   "settings.perf.v8_heap.desc": "JavaScriptエンジンのメモリ制限を64MBから128MBに増やします。フレンドリストが多い場合や多くのタブを開いている場合に動作が遅い時に有効です。",
   "settings.perf.render_proc.label": "レンダープロセスを2つ使用",
   "settings.perf.render_proc.desc": "WebView2が1つではなく最大2つのレンダラープロセスを使用できるようにします。安定性が向上する場合がありますが、メモリ使用量が若干増えます。",
+  "settings.perf.linux_soft_render.label": "ソフトウェアレンダリングを強制",
+  "settings.perf.linux_soft_render.desc": "GPUの代わりにCPUでVRCNextを描画します。仮想マシンなどでウィンドウが真っ白のままになる、または表示が乱れる場合にのみオンにしてください。オンの間はぼかし効果が表示されません。",
   "settings.perf.restart_hint": "パフォーマンス設定を適用するには再起動が必要です。",
   "settings.perf.animations.label": "アニメーションとトランジション",
   "settings.perf.animations.desc": "VRCNext のすべてのアニメーションとトランジションを無効にします。ダイアログの開閉や切り替えを高速化し、CPU 使用率をわずかに削減できます。",

@@ -456,6 +456,7 @@ public partial class AppShell
             ? Path.Combine(frontend, "index.html")
             : Path.Combine(frontend, "setup", "setup.html");
         if (!File.Exists(startPage)) startPage = Path.Combine(frontend, "index.html");
+        if (_settings.SetupComplete) _authCtrl.PrefetchSessionResume();
 #if !WINDOWS
         // WebKitGTK blocks fetch() on file:// pages, so the frontend is served
         // through the local HttpListener instead.
@@ -561,23 +562,6 @@ public partial class AppShell
 #if !WINDOWS
         // Auto-install missing GStreamer plugins required by WebKit2GTK (blank window without them)
         _ = Task.Run(EnsureLinuxGstreamer);
-
-        // WebKit2GTK on systems without proper GPU (VMs, Hyper-V, missing Vulkan):
-        // Force Mesa software rendering so EGL/OpenGL never fails in the WebKit child process.
-        // These must be set before PhotinoWindow so the child process inherits them.
-        // Skipped when the user enables hardware acceleration in the performance settings.
-        if (!_settings.LinuxGpuAcceleration)
-        {
-            void SetIfUnset(string key, string val)
-            {
-                if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(key)))
-                    Environment.SetEnvironmentVariable(key, val);
-            }
-            SetIfUnset("WEBKIT_DISABLE_DMABUF_RENDERER",    "1");
-            SetIfUnset("WEBKIT_DISABLE_COMPOSITING_MODE",   "1");
-            SetIfUnset("LIBGL_ALWAYS_SOFTWARE",             "1");
-            SetIfUnset("GALLIUM_DRIVER",                    "llvmpipe");
-        }
 #endif
 
         var iconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "frontend", "logo.png");
@@ -608,6 +592,7 @@ public partial class AppShell
                 : Photino.NET.PhotinoSuspendableResources.None)
 #endif
 #if !WINDOWS
+            .SetBrowserControlInitParameters(OperatingSystem.IsLinux() ? "{\"photino.cacheModel\":\"documentBrowser\",\"photino.memoryLimitMB\":1536}" : null!)
             .RegisterWindowClosingHandler((_, _) => _windowCtrl.HandleWindowClosing())
 #endif
             .RegisterWindowCreatedHandler((_, _) => _windowReady.TrySetResult())
@@ -1137,50 +1122,93 @@ public partial class AppShell
         "{\"type\":\"vrcLoggedOut\"",
     };
     private readonly TaskCompletionSource _windowReady = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private const int JsBatchMaxMessages = 100;
 
     private async Task RunJsDispatcherAsync()
     {
         await _windowReady.Task;
-        await foreach (var msg in _jsQueue.Reader.ReadAllAsync())
+        var reader = _jsQueue.Reader;
+        var batchMessages = OperatingSystem.IsLinux();
+        var batch = new List<string>();
+        await foreach (var msg in reader.ReadAllAsync())
         {
-            var toSend = msg;
-            byte[]? friendsHash = null;
-            if (ReferenceEquals(msg, FriendsCoalesceMarker) || msg == FriendsCoalesceMarker)
+            var first = PrepareJsMessage(msg, out var hasFriends);
+            if (!batchMessages)
             {
-                Interlocked.Exchange(ref _friendsMarkerQueued, 0);
-                lock (_friendsCoalesceLock)
-                {
-                    if (_pendingFriendsJson == null) continue;
-                    toSend = _pendingFriendsJson;
-                    _pendingFriendsJson = null;
-                }
-                friendsHash = System.Security.Cryptography.SHA256.HashData(
-                    System.Runtime.InteropServices.MemoryMarshal.AsBytes(toSend.AsSpan()));
-                var resend = Interlocked.Exchange(ref _friendsResendNeeded, 0) != 0;
-                if (!resend && _lastSentFriendsHash != null && toSend.Length == _lastSentFriendsLength
-                    && friendsHash.AsSpan().SequenceEqual(_lastSentFriendsHash))
-                {
-                    Interlocked.Increment(ref _skippedFriendsPushes);
-                    continue;
-                }
+                if (first != null) SendJsMessage(first, hasFriends);
+                continue;
             }
-            else if (IsFriendsStateMessage(msg))
-                Volatile.Write(ref _friendsResendNeeded, 1);
-            try
+            batch.Clear();
+            if (first != null) batch.Add(first);
+            while (batch.Count < JsBatchMaxMessages && reader.TryRead(out var next))
             {
-                _window.Invoke(() => _window.SendWebMessage(toSend));
-                if (friendsHash != null)
-                {
-                    _lastSentFriendsHash = friendsHash;
-                    _lastSentFriendsLength = toSend.Length;
-                }
+                var prepared = PrepareJsMessage(next, out var isFriends);
+                if (prepared == null) continue;
+                batch.Add(prepared);
+                hasFriends |= isFriends;
             }
-            catch (Exception ex)
-            {
-                if (friendsHash != null) Volatile.Write(ref _friendsResendNeeded, 1);
-                CrashHandler.WriteEntry("RunJsDispatcherAsync", ex);
-            }
+            if (batch.Count == 0) continue;
+            SendJsMessage(batch.Count == 1 ? batch[0] : BuildJsBatch(batch), hasFriends);
         }
+    }
+
+    private string? PrepareJsMessage(string msg, out bool isFriends)
+    {
+        isFriends = false;
+        if (!ReferenceEquals(msg, FriendsCoalesceMarker) && msg != FriendsCoalesceMarker)
+        {
+            if (IsFriendsStateMessage(msg)) Volatile.Write(ref _friendsResendNeeded, 1);
+            return msg;
+        }
+        Interlocked.Exchange(ref _friendsMarkerQueued, 0);
+        string json;
+        lock (_friendsCoalesceLock)
+        {
+            if (_pendingFriendsJson == null) return null;
+            json = _pendingFriendsJson;
+            _pendingFriendsJson = null;
+        }
+        var hash = System.Security.Cryptography.SHA256.HashData(
+            System.Runtime.InteropServices.MemoryMarshal.AsBytes(json.AsSpan()));
+        var resend = Interlocked.Exchange(ref _friendsResendNeeded, 0) != 0;
+        if (!resend && _lastSentFriendsHash != null && json.Length == _lastSentFriendsLength
+            && hash.AsSpan().SequenceEqual(_lastSentFriendsHash))
+        {
+            Interlocked.Increment(ref _skippedFriendsPushes);
+            return null;
+        }
+        _lastSentFriendsHash = hash;
+        _lastSentFriendsLength = json.Length;
+        isFriends = true;
+        return json;
+    }
+
+    private void SendJsMessage(string message, bool containsFriends)
+    {
+        try
+        {
+            _window.Invoke(() => _window.SendWebMessage(message));
+        }
+        catch (Exception ex)
+        {
+            if (containsFriends) Volatile.Write(ref _friendsResendNeeded, 1);
+            CrashHandler.WriteEntry("RunJsDispatcherAsync", ex);
+        }
+    }
+
+    private static string BuildJsBatch(List<string> messages)
+    {
+        var length = 32;
+        foreach (var m in messages) length += m.Length + 1;
+        var sb = new System.Text.StringBuilder(length);
+        sb.Append("{\"type\":\"__batch\",\"payload\":[");
+        for (var i = 0; i < messages.Count; i++)
+        {
+            if (i > 0) sb.Append(',');
+            sb.Append(messages[i]);
+        }
+        sb.Append("]}");
+        return sb.ToString();
     }
 
     private static bool IsFriendsStateMessage(string msg)

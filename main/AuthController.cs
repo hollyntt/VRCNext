@@ -941,17 +941,32 @@ public class AuthController
         catch (Exception ex) { _core.SendToJS("log", new { msg = $"VRChat: Resume error — {ex.Message}", color = "warn" }); }
     }
 
+    private Task<HttpResponseMessage>? _resumePrefetch;
+    private DateTime _resumePrefetchAt;
+
+    public void PrefetchSessionResume()
+    {
+        var active = _core.Settings.ActiveAccount;
+        if (active == null || string.IsNullOrEmpty(active.AuthCookie)) return;
+        _core.VrcApi.RestoreCookies(active.AuthCookie, active.TwoFactorCookie);
+        _resumePrefetchAt = DateTime.UtcNow;
+        _resumePrefetch = _core.Auth.PrefetchAuthUserAsync();
+    }
+
     private async Task VrcTryResumeInternalAsync()
     {
         SetupVrcDebugLog();
+
+        var prefetch = Interlocked.Exchange(ref _resumePrefetch, null);
+        if (prefetch != null && (DateTime.UtcNow - _resumePrefetchAt).TotalSeconds > 60) prefetch = null;
 
         var active = _core.Settings.ActiveAccount;
         if (active != null && !string.IsNullOrEmpty(active.AuthCookie))
         {
             _core.SendToJS("log", new { msg = "VRChat: Resuming session...", color = "sec" });
-            _core.VrcApi.RestoreCookies(active.AuthCookie, active.TwoFactorCookie);
+            if (prefetch == null) _core.VrcApi.RestoreCookies(active.AuthCookie, active.TwoFactorCookie);
 
-            var result = await _core.Auth.TryResumeSessionAsync();
+            var result = await _core.Auth.TryResumeSessionAsync(prefetch);
             if (result.Success && result.User != null)
             {
                 SendVrcUserData(result.User, loginFlow: true);
@@ -2390,7 +2405,7 @@ public class AuthController
 
             // Performance flags (require restart)
             _core.Settings.GpuAcceleration    = data["gpuAcceleration"]?.Value<bool>()    ?? _core.Settings.GpuAcceleration;
-            _core.Settings.LinuxGpuAcceleration = data["linuxGpuAcceleration"]?.Value<bool>() ?? _core.Settings.LinuxGpuAcceleration;
+            _core.Settings.LinuxSoftwareRendering = data["linuxSoftwareRendering"]?.Value<bool>() ?? _core.Settings.LinuxSoftwareRendering;
             _core.Settings.GpuShaderCache     = data["gpuShaderCache"]?.Value<bool>()     ?? false;
             _core.Settings.V8Heap128          = data["v8Heap128"]?.Value<bool>()          ?? false;
             _core.Settings.TwoRenderProcesses = data["twoRenderProcesses"]?.Value<bool>() ?? false;

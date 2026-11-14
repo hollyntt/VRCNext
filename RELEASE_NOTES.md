@@ -38,6 +38,10 @@ Commits by @hollyntt
 * The crash watchdog uses much less memory.
 * Less memory is used for players you have met.
 * Less background work for your friends list, mutual friends and the activity log.
+* The interface loads faster at startup.
+* VRCNext logs you in faster at startup.
+* Less CPU usage on Linux while a lot of data arrives at once.
+* On Linux with NVIDIA graphics, VRCNext no longer starts a second copy of itself in the background.
 
 ## Fixes
 * Fixed images not being cached after logging in again inside the app.
@@ -47,3 +51,5 @@ Commits by @hollyntt
 * Fixed memory usage growing the longer VRCNext stays open.
 * Fixed the group owner name sometimes going missing.
 * Added missing css for the new instance badges and vibes.
+* Fixed the Linux setting **Enable Hardware Acceleration** doing nothing. It is now called **Force Software Rendering**.
+* Fixed VRCNext passing software rendering settings to Steam and other programs it opens on Linux.

@@ -2545,6 +2545,8 @@
   "settings.perf.v8_heap.desc": "Aumenta el límite de memoria del motor JavaScript de 64 MB a 128 MB. Útil si VRCNext va lento con listas de amigos grandes o muchas pestañas abiertas.",
   "settings.perf.render_proc.label": "Usar 2 procesos de renderizado",
   "settings.perf.render_proc.desc": "Permite a WebView2 usar hasta 2 procesos de renderizado en lugar de 1. Puede mejorar la estabilidad pero usa un poco más de memoria.",
+  "settings.perf.linux_soft_render.label": "Forzar renderizado por software",
+  "settings.perf.linux_soft_render.desc": "Dibuja VRCNext con la CPU en lugar de la GPU. Actívalo solo si la ventana se queda en blanco o muestra fallos gráficos, por ejemplo en una máquina virtual. Mientras esté activado no se muestran los efectos de desenfoque.",
   "settings.perf.restart_hint": "Se requiere reiniciar para aplicar los cambios de rendimiento.",
   "settings.perf.animations.label": "Animaciones y Transiciones",
   "settings.perf.animations.desc": "Desactiva todas las animaciones y transiciones en VRCNext. Esto puede acelerar la apertura de diálogos y el cambio entre ellos, y también puede reducir un poco el uso de CPU.",

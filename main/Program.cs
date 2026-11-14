@@ -10,29 +10,13 @@ static class Program
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     private static extern int SetCurrentProcessExplicitAppUserModelID(string appID);
 
+    [DllImport("libc", EntryPoint = "setenv", SetLastError = true)]
+    private static extern int LibcSetenv(string name, string value, int overwrite);
+
     [STAThread]
     static void Main(string[] args)
     {
-	//Webkit arg.. my fix at least lol
-	if (OperatingSystem.IsLinux() && System.IO.File.Exists("/proc/driver/nvidia/version") && Environment.GetEnvironmentVariable("WEBKIT_DISABLE_DMABUF_RENDERER") != "1")
-	{
-		Environment.SetEnvironmentVariable("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
-
-		var info = new System.Diagnostics.ProcessStartInfo
-		{
-			FileName = Environment.ProcessPath!,
-			UseShellExecute = false
-		};
-		foreach (var arg in args)
-		{
-			info.ArgumentList.Add(arg);
-		}
-		
-		using var process = System.Diagnostics.Process.Start(info);
-		process?.WaitForExit();
-		Environment.Exit(process?.ExitCode ?? 0);
-		return;
-	}
+        ApplyLinuxRenderingEnvironment();
         EnsureConfigRootExists();
 
         if (args.Length >= 4 && args[0] == "--watchdog")
@@ -74,6 +58,41 @@ static class Program
             Velopack.VelopackApp.Build().Run();
             new AppShell(args).Run();
         }
+    }
+
+    static void ApplyLinuxRenderingEnvironment()
+    {
+        if (!OperatingSystem.IsLinux()) return;
+        const string key = "WEBKIT_DISABLE_DMABUF_RENDERER";
+        var current = Environment.GetEnvironmentVariable(key);
+        if (File.Exists("/proc/driver/nvidia/version"))
+        {
+            if (current != "1") SetNativeEnvironmentVariable(key, "1");
+        }
+        else if (string.IsNullOrEmpty(current) && IsLinuxSoftwareRenderingEnabled())
+        {
+            SetNativeEnvironmentVariable(key, "1");
+        }
+    }
+
+    static void SetNativeEnvironmentVariable(string key, string value)
+    {
+        try { LibcSetenv(key, value, 1); } catch { }
+        Environment.SetEnvironmentVariable(key, value);
+    }
+
+    static bool IsLinuxSoftwareRenderingEnabled()
+    {
+        try
+        {
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "VRCNext", "settings.json");
+            if (!File.Exists(path)) return false;
+            var json = File.ReadAllText(path);
+            return System.Text.RegularExpressions.Regex.IsMatch(json, "\"[Ll]inuxSoftwareRendering\"\\s*:\\s*true");
+        }
+        catch { return false; }
     }
 
     static void EnsureConfigRootExists()
