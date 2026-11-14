@@ -354,6 +354,7 @@ function saveSettings() {
             restartAfterCrash: document.getElementById('setRestartAfterCrash').checked,
             rememberWindowSize:     document.getElementById('setRememberWindowSize')?.checked     ?? false,
             rememberWindowPosition: document.getElementById('setRememberWindowPosition')?.checked ?? false,
+            showStartupLoadingBar:  document.getElementById('setShowLoadingBar')?.checked         ?? true,
             regBackupEnabled:    document.getElementById('setRegBackupEnabled')?.checked    ?? true,
             regBackupDays:       parseInt(document.getElementById('setRegBackupCycle')?.value    ?? '30'),
             dbAutoBackupEnabled: document.getElementById('setDbAutoBackupEnabled')?.checked  ?? true,
@@ -1137,6 +1138,10 @@ function loadSettingsToUI(s) {
     if (rwsEl) rwsEl.checked = s.RememberWindowSize ?? s.rememberWindowSize ?? false;
     const rwpEl = document.getElementById('setRememberWindowPosition');
     if (rwpEl) rwpEl.checked = s.RememberWindowPosition ?? s.rememberWindowPosition ?? false;
+    const showLoadingBar = s.ShowStartupLoadingBar ?? s.showStartupLoadingBar ?? true;
+    const slbEl = document.getElementById('setShowLoadingBar');
+    if (slbEl) slbEl.checked = showLoadingBar;
+    _storeLoadingBarSetting(showLoadingBar);
 
     // Auto-Backups
     const rbeEl = document.getElementById('setRegBackupEnabled');
@@ -1287,6 +1292,15 @@ function handleImgCacheOptimizeProgress(data) {
     }
 }
 
+
+function _storeLoadingBarSetting(on) {
+    try { localStorage.setItem('vrcnShowLoadingBar', on ? '1' : '0'); } catch (e) {}
+}
+
+function onShowLoadingBarChange(on) {
+    _storeLoadingBarSetting(on);
+    autoSave();
+}
 
 function onPerfSettingChange() {
     autoSave();

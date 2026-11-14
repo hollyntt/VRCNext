@@ -1241,6 +1241,8 @@
   "settings.window.remember_size_desc": "VRCNextの起動時に最後に使用したウィンドウサイズを復元します。",
   "settings.window.remember_position": "ウィンドウ位置を記憶",
   "settings.window.remember_position_desc": "VRCNextの起動時に最後の画面位置を復元します。以前のモニターが接続されていない場合はデフォルトのモニターにリセットされます。",
+  "settings.window.loading_bar": "起動時にローディングバーを表示",
+  "settings.window.loading_bar_desc": "オフにするとローディングバーが非表示になり、画面がより早く表示されます。",
   "settings.design.title": "デザイン",
   "settings.design.tabs.background": "背景",
   "settings.design.tabs.colors": "カラー",

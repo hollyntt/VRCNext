@@ -766,6 +766,7 @@ public class AppSettings
     // Window Behavior
     public bool RememberWindowSize     { get; set; } = false;
     public bool RememberWindowPosition { get; set; } = false;
+    public bool ShowStartupLoadingBar  { get; set; } = true;
     public int  SavedWindowWidth       { get; set; } = 1100;
     public int  SavedWindowHeight      { get; set; } = 700;
     public int  SavedWindowX           { get; set; } = -1;

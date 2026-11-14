@@ -1264,6 +1264,8 @@
   "settings.window.remember_size_desc": "VRCNext 啟動時恢復上次使用的視窗大小。",
   "settings.window.remember_position": "記住視窗位置",
   "settings.window.remember_position_desc": "VRCNext 啟動時恢復上次的螢幕位置。如果之前的顯示器不再連線，則重置到預設顯示器。",
+  "settings.window.loading_bar": "啟動時顯示載入條",
+  "settings.window.loading_bar_desc": "關閉後將隱藏載入條，介面會更快顯示。",
   "settings.design.title": "設計",
   "settings.design.tabs.background": "背景",
   "settings.design.tabs.colors": "顏色",

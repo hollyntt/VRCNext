@@ -2971,6 +2971,8 @@
   "settings.watch_folders.title": "Відстежувані папки",
   "settings.window.remember_position": "Запам'ятовувати положення вікна",
   "settings.window.remember_position_desc": "Зберігати позицію вікна",
+  "settings.window.loading_bar": "Показувати смугу завантаження під час запуску",
+  "settings.window.loading_bar_desc": "Якщо вимкнено, смуга завантаження прихована й інтерфейс з'являється швидше.",
   "settings.window.remember_size": "Запам'ятовувати розмір вікна",
   "settings.window.remember_size_desc": "Зберігати розмір вікна",
   "settings.window.title": "Поведінка вікна",

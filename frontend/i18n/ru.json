@@ -1242,6 +1242,8 @@
   "settings.window.remember_size_desc": "Сохранять размер окна",
   "settings.window.remember_position": "Запомнить позицию",
   "settings.window.remember_position_desc": "Сохранять позицию окна",
+  "settings.window.loading_bar": "Показывать полосу загрузки при запуске",
+  "settings.window.loading_bar_desc": "Если выключено, полоса загрузки скрывается и интерфейс появляется быстрее.",
   "settings.design.title": "Дизайн",
   "settings.design.tabs.background": "Фон",
   "settings.design.tabs.colors": "Цвета",

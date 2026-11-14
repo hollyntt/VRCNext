@@ -1264,6 +1264,8 @@
   "settings.window.remember_size_desc": "VRCNext가 실행되면 마지막 창 크기를 복원합니다.",
   "settings.window.remember_position": "창 위치 기억하기",
   "settings.window.remember_position_desc": "VRCNext가 실행되면 마지막 창 위치를 복원합니다. 이전 모니터가 더 이상 연결되지 않으면 기본 모니터로 초기화됩니다.",
+  "settings.window.loading_bar": "시작 시 로딩 바 표시",
+  "settings.window.loading_bar_desc": "끄면 로딩 바가 숨겨지고 화면이 더 빨리 표시됩니다.",
   "settings.design.title": "디자인",
   "settings.design.tabs.background": "배경",
   "settings.design.tabs.colors": "색",

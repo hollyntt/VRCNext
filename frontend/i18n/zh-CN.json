@@ -1241,6 +1241,8 @@
   "settings.window.remember_size_desc": "VRCNext 启动时恢复上次使用的窗口大小。",
   "settings.window.remember_position": "记住窗口位置",
   "settings.window.remember_position_desc": "VRCNext 启动时恢复上次的屏幕位置。如果之前的显示器不再连接，则重置到默认显示器。",
+  "settings.window.loading_bar": "启动时显示加载条",
+  "settings.window.loading_bar_desc": "关闭后将隐藏加载条，界面会更快显示。",
   "settings.design.title": "设计",
   "settings.design.tabs.background": "背景",
   "settings.design.tabs.colors": "颜色",

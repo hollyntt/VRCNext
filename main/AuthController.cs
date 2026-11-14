@@ -2396,6 +2396,7 @@ public class AuthController
             // Window Behavior
             _core.Settings.RememberWindowSize     = data["rememberWindowSize"]?.Value<bool>()     ?? false;
             _core.Settings.RememberWindowPosition = data["rememberWindowPosition"]?.Value<bool>() ?? false;
+            _core.Settings.ShowStartupLoadingBar  = data["showStartupLoadingBar"]?.Value<bool>()  ?? _core.Settings.ShowStartupLoadingBar;
 
             // Auto-Backups
             _core.Settings.RegBackupEnabled    = data["regBackupEnabled"]?.Value<bool>()    ?? true;

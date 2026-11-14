@@ -1253,6 +1253,8 @@
   "settings.window.remember_size_desc": "Stellt die zuletzt verwendete Fenstergröße beim Start von VRCNext wieder her.",
   "settings.window.remember_position": "Fensterposition merken",
   "settings.window.remember_position_desc": "Stellt die letzte Bildschirmposition des Fensters beim Start von VRCNext wieder her. Wechselt zum Standardmonitor, wenn der vorherige Monitor nicht mehr verbunden ist.",
+  "settings.window.loading_bar": "Ladebalken beim Start anzeigen",
+  "settings.window.loading_bar_desc": "Wenn deaktiviert, wird der Ladebalken ausgeblendet und die Oberfläche erscheint schneller.",
   "settings.design.title": "Design",
   "settings.design.tabs.background": "Hintergrund",
   "settings.design.tabs.colors": "Farben",

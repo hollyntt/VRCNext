@@ -2,6 +2,7 @@
 
 ## New
 * Added **Space Walk** to tilt and turn your playspace in every direction, like floating in space.
+* Added **Show Loading-bar on Startup** in **Settings > General > Window Behavior**. Turn it off to see the interface faster.
 
 ## Changes
 * VRC+ decorations in lists and on your own profile card now only animate while you hover over them.
@@ -53,3 +54,4 @@ Commits by @hollyntt
 * Added missing css for the new instance badges and vibes.
 * Fixed the Linux setting **Enable Hardware Acceleration** doing nothing. It is now called **Force Software Rendering**.
 * Fixed VRCNext passing software rendering settings to Steam and other programs it opens on Linux.
+* Fixed VRCNext crashing right after start on PCs without .NET 10.

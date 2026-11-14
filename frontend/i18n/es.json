@@ -1241,6 +1241,8 @@
   "settings.window.remember_size_desc": "Restaura el tamaño de la ventana al último utilizado cuando VRCNext se inicia.",
   "settings.window.remember_position": "Recordar posición de la ventana",
   "settings.window.remember_position_desc": "Restaura la última posición de la ventana en pantalla cuando VRCNext se inicia. Se restablece al monitor predeterminado si el monitor anterior ya no está conectado.",
+  "settings.window.loading_bar": "Mostrar barra de carga al iniciar",
+  "settings.window.loading_bar_desc": "Si se desactiva, se oculta la barra de carga y la interfaz aparece más rápido.",
   "settings.design.title": "Diseño",
   "settings.design.tabs.background": "Fondo",
   "settings.design.tabs.colors": "Colores",

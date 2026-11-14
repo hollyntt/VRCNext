@@ -269,6 +269,11 @@
                             <label class="toggle"><input type="checkbox" id="setRememberWindowPosition" onchange="autoSave()"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
                         </div>
                         <div class="set-desc" style="margin-bottom:10px;" data-i18n="settings.window.remember_position_desc">Restores the window to its last screen position when VRCNext starts. Resets to the default monitor if the previous monitor is no longer connected.</div>
+                        <div class="sf-toggle-row">
+                            <span data-i18n="settings.window.loading_bar">Show Loading-bar on Startup</span>
+                            <label class="toggle"><input type="checkbox" id="setShowLoadingBar" checked onchange="onShowLoadingBarChange(this.checked)"><div class="toggle-track"><div class="toggle-knob"></div></div></label>
+                        </div>
+                        <div class="set-desc" style="margin-bottom:10px;" data-i18n="settings.window.loading_bar_desc">When disabled it will hide the loading bar which shows UI elements faster.</div>
                         <div class="sf-toggle-row" style="margin-top:6px;">
                             <span data-i18n="settings.debug.text_tools.label">Enable Text Tools</span>
                             <label class="toggle"><input type="checkbox" id="setTextToolsEnabled" onchange="toggleTextTools(this.checked)"><div class="toggle-track"><div class="toggle-knob"></div></div></label>

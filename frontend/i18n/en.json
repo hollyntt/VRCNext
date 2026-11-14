@@ -1266,6 +1266,8 @@
   "settings.window.remember_size_desc": "Restores the window to its last used size when VRCNext starts.",
   "settings.window.remember_position": "Remember Window Position",
   "settings.window.remember_position_desc": "Restores the window to its last screen position when VRCNext starts. Resets to the default monitor if the previous monitor is no longer connected.",
+  "settings.window.loading_bar": "Show Loading-bar on Startup",
+  "settings.window.loading_bar_desc": "When disabled it will hide the loading bar which shows UI elements faster.",
   "settings.design.title": "Design",
   "settings.design.tabs.background": "Background",
   "settings.design.tabs.colors": "Colors",
